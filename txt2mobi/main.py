@@ -1,7 +1,7 @@
 # coding=utf8
 
 import sys
-from txt2mobi.scaffold import init_project, generate_project, test_project
+from txt2mobi.scaffold import op_init_project, generate_project, test_project
 
 
 def main():
@@ -14,7 +14,7 @@ def main():
         print "Wrong argument! Arguments must be [ %s ]" % "  ".join(commands)
         sys.exit(1)
     if command == commands[0]:
-        init_project()
+        op_init_project()
         print 'project init successfull!'
         sys.exit(0)
     if command == commands[1]:

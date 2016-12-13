@@ -5,7 +5,7 @@ from utilities import current_working_dir, init_project
 from txt2html import Book
 
 
-def init_project():
+def op_init_project():
     """
     初始化项目目录
     :return:

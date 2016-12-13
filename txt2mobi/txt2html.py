@@ -16,7 +16,7 @@ def get_coding(file_content):
 
 def unicode_line(file_content):
     print "正在识别文件字符集..."
-    coding = codeTrans(get_coding(file_content))
+    coding = codeTrans(get_coding(file_content[:500]))
     print "文件字符集:", coding
     lines = file_content.split('\n')
     try:

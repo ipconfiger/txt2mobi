@@ -1,6 +1,7 @@
 # coding=utf8
 
 import os
+import sys
 import requests
 import ConfigParser
 from exceptions import KindleGenNotInstalledError
@@ -35,10 +36,14 @@ def check_kindlgen(command='kindlegen'):
 
 class ProjectConfig(object):
     def __init__(self):
-        file_path = os.path.join(current_working_dir(), '.project.ini')
-        self.cf = ConfigParser.ConfigParser()
-        self.cf.read(file_path)
-        print self.cf.get("book", "title")
+        try:
+            file_path = os.path.join(current_working_dir(), '.project.ini')
+            self.cf = ConfigParser.ConfigParser()
+            self.cf.read(file_path)
+        except Exception:
+            print "当前目录未初始化"
+            sys.exit(1)
+
 
     @property
     def gen_command(self):

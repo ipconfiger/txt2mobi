@@ -12,10 +12,9 @@ setup(name='txt2mobi',
       license='GNU GENERAL PUBLIC LICENSE',
       packages=['txt2mobi'],
       install_requires=[
-          'shutil',
-          'chardet'
+          'chardet',
       ],
       entry_points = {
-        'console_scripts': ['txt2mobi=main:main'],
+        'console_scripts': ['txt2mobi=txt2mobi.main:main'],
       },
       zip_safe=False)
