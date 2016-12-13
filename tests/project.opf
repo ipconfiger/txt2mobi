@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package unique-identifier="uid" xmlns:opf="http://www.idpf.org/2007/opf" xmlns:asd="http://www.idpf.org/asdfaf">
+    <metadata>
+        <dc-metadata  xmlns:dc="http://purl.org/metadata/dublin_core" xmlns:oebpackage="http://openebook.org/namespaces/oeb-package/1.0/">
+            <dc:Title>书名</dc:Title>
+            <dc:Language>zh-cn</dc:Language>
+            <dc:Creator>作者</dc:Creator>
+            <dc:Copyrights>作者</dc:Copyrights>
+            <dc:Publisher>Alexander.Li</dc:Publisher>
+            <x-metadata>
+                <EmbeddedCover>cover.png</EmbeddedCover>
+            </x-metadata>
+        </dc-metadata>
+    </metadata>
+    <manifest>
+        <item id="toc" properties="nav" href="book.html" media-type="application/xhtml+xml"/>
+        <item id="content" media-type="application/xhtml+xml" href="book.html"></item>
+        <item id="cover-image" media-type="image/png" href="cover.png"/>
+    </manifest>
+    <spine toc="ncx">
+        <itemref idref="cover-image"/>
+        <itemref idref="toc"/>
+        <itemref idref="content"/>
+    </spine>
+    <guide>
+        <reference type="toc" title="目录" href="book.html"/>
+        <reference type="content" title="Book" href="book.html"/>
+    </guide>
+</package>
+        

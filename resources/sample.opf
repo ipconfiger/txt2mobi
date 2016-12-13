@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package unique-identifier="shinemoon" version ="1.0" xmlns="http://www.idpf.org/2007/opf">
+<metadata>
+<dc-metadata  xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+<dc:Title>[title_input]</dc:Title>
+<dc:Language>zh</dc:Language>
+<dc:Creator>[author_input]</dc:Creator>
+<!--dc:Copyrights>Copyright owner</dc:Copyrights-->
+<dc:Publisher>txt2Kindle</dc:Publisher>
+<x-metadata>
+<EmbeddedCover>cover.png</EmbeddedCover>
+</x-metadata>
+</dc-metadata>
+</metadata>
+<manifest>
+<item id="toc" properties="nav" href="combined.html" media-type="application/xhtml+xml"/>
+<item id="content" media-type="application/xhtml+xml" href="combined.html"></item>
+<item id="cover-image" media-type="image/png" href="cover.png"/>
+<item href="title.otf" id="title.otf" media-type="application/vnd.ms-opentype"/>
+<item href="normal.otf" id="normal.otf" media-type="application/vnd.ms-opentype"/>
+
+<!--item id="ncx" media-type="application/x-dtbncx+xml" href="toc.ncx"/-->
+</manifest>
+<spine>
+<itemref idref="cover-image"/>
+<itemref idref="toc"/>
+<itemref idref="content"/>
+</spine>
+<!--guide>
+<reference type="toc" title="Table of Contents" href="toc.html"/>
+<reference type="text" title="Book" href="index.html"/>
+</guide-->
+</package>

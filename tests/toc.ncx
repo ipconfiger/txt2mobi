@@ -1,0 +1,202 @@
+<?xml version="1.0"?>
+<!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN"
+ "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">
+<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1">
+ <head>
+ </head>
+        <docTitle>
+               <text>书名</text>
+        </docTitle>
+    <navMap>
+              <navPoint id="ch1" playOrder="1">
+            <navLabel>
+                <text>
+                    第一章  少爷与奴仆
+
+                </text>
+            </navLabel>
+            <content src="book.html#ch1" />
+        </navPoint>
+      <navPoint id="ch2" playOrder="2">
+            <navLabel>
+                <text>
+                    第二章  仙门杂役
+
+                </text>
+            </navLabel>
+            <content src="book.html#ch2" />
+        </navPoint>
+      <navPoint id="ch3" playOrder="3">
+            <navLabel>
+                <text>
+                    第三章  外门弟子
+
+                </text>
+            </navLabel>
+            <content src="book.html#ch3" />
+        </navPoint>
+      <navPoint id="ch4" playOrder="4">
+            <navLabel>
+                <text>
+                    第四章   麻烦来了，物竞天择。
+
+                </text>
+            </navLabel>
+            <content src="book.html#ch4" />
+        </navPoint>
+      <navPoint id="ch5" playOrder="5">
+            <navLabel>
+                <text>
+                    第五章   后山
+
+                </text>
+            </navLabel>
+            <content src="book.html#ch5" />
+        </navPoint>
+      <navPoint id="ch6" playOrder="6">
+            <navLabel>
+                <text>
+                    第六章  意外的相识
+
+                </text>
+            </navLabel>
+            <content src="book.html#ch6" />
+        </navPoint>
+      <navPoint id="ch7" playOrder="7">
+            <navLabel>
+                <text>
+                    第七章  妖丹在哪？
+
+                </text>
+            </navLabel>
+            <content src="book.html#ch7" />
+        </navPoint>
+      <navPoint id="ch8" playOrder="8">
+            <navLabel>
+                <text>
+                    第八章   藏不住了！
+
+                </text>
+            </navLabel>
+            <content src="book.html#ch8" />
+        </navPoint>
+      <navPoint id="ch9" playOrder="9">
+            <navLabel>
+                <text>
+                    第九章  吞丹！
+
+                </text>
+            </navLabel>
+            <content src="book.html#ch9" />
+        </navPoint>
+      <navPoint id="ch10" playOrder="10">
+            <navLabel>
+                <text>
+                    第十章  蛇妖与师兄！
+
+                </text>
+            </navLabel>
+            <content src="book.html#ch10" />
+        </navPoint>
+      <navPoint id="ch11" playOrder="11">
+            <navLabel>
+                <text>
+                    第十一章   又见
+
+                </text>
+            </navLabel>
+            <content src="book.html#ch11" />
+        </navPoint>
+      <navPoint id="ch12" playOrder="12">
+            <navLabel>
+                <text>
+                    第十二章  我也抢！
+
+                </text>
+            </navLabel>
+            <content src="book.html#ch12" />
+        </navPoint>
+      <navPoint id="ch13" playOrder="13">
+            <navLabel>
+                <text>
+                    第十三章   公开战斗区
+
+                </text>
+            </navLabel>
+            <content src="book.html#ch13" />
+        </navPoint>
+      <navPoint id="ch14" playOrder="14">
+            <navLabel>
+                <text>
+                    第十四章  借势
+
+                </text>
+            </navLabel>
+            <content src="book.html#ch14" />
+        </navPoint>
+      <navPoint id="ch15" playOrder="15">
+            <navLabel>
+                <text>
+                    第十五章  后山深处
+
+                </text>
+            </navLabel>
+            <content src="book.html#ch15" />
+        </navPoint>
+      <navPoint id="ch16" playOrder="16">
+            <navLabel>
+                <text>
+                    第十六章  又现蛇妖！
+
+                </text>
+            </navLabel>
+            <content src="book.html#ch16" />
+        </navPoint>
+      <navPoint id="ch17" playOrder="17">
+            <navLabel>
+                <text>
+                    第十七章  白骨金旗
+
+                </text>
+            </navLabel>
+            <content src="book.html#ch17" />
+        </navPoint>
+      <navPoint id="ch18" playOrder="18">
+            <navLabel>
+                <text>
+                    第十八章  观战
+
+                </text>
+            </navLabel>
+            <content src="book.html#ch18" />
+        </navPoint>
+      <navPoint id="ch19" playOrder="19">
+            <navLabel>
+                <text>
+                    第十九章   追杀
+
+                </text>
+            </navLabel>
+            <content src="book.html#ch19" />
+        </navPoint>
+      <navPoint id="ch20" playOrder="20">
+            <navLabel>
+                <text>
+                    第二十章   亡命之徒
+
+                </text>
+            </navLabel>
+            <content src="book.html#ch20" />
+        </navPoint>
+      <navPoint id="ch21" playOrder="21">
+            <navLabel>
+                <text>
+                    第二十一章   收债
+
+                </text>
+            </navLabel>
+            <content src="book.html#ch21" />
+        </navPoint>
+    </navMap>
+</ncx>
+        
