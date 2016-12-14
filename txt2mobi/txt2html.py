@@ -21,8 +21,9 @@ def unicode_line(file_content):
     lines = file_content.split('\n')
     try:
         return [line.decode(coding) for line in lines]
-    except:
-        raise EncodingError
+    except Exception, e:
+        print e
+        raise EncodingError(line)
 
 
 class Chapter(object):
@@ -70,6 +71,7 @@ class Book(object):
             f.close()
         self.chapters = []
         self.process_lines(lines)
+        self.name = config.title
 
     def __is_chapter_title(self, line):
         """
@@ -79,7 +81,7 @@ class Book(object):
         :return:
         :rtype:
         """
-        if line.startswith(u'第'):
+        if line.strip().startswith(u'第'):
             if 3 < len(line.strip()) < 30 and u"第" in line and u"章" in line:
                 return True
         line = line.replace(u"．", u".").replace(u":", u".")

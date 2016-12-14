@@ -4,7 +4,7 @@ __author__ = 'liming'
 from setuptools import setup
 
 setup(name='txt2mobi',
-      version='0.0.1',
+      version='0.0.2',
       description='Convert Chinese-Novel txt book to kindle .mobi file',
       url='https://github.com/ipconfiger/txt2mobi',
       author='Alexander.Li',

@@ -4,7 +4,11 @@ import os
 import sys
 import requests
 import ConfigParser
+import socket
+import SimpleHTTPServer
+import SocketServer
 from exceptions import KindleGenNotInstalledError
+
 
 
 def current_working_dir():
@@ -75,3 +79,28 @@ def codeTrans(code):
         'GB2312': 'GBK'
     }
     return codings.get(code, 'utf8')
+
+
+def getIp():
+    """
+    获取本机IP地址
+    :return:
+    :rtype:
+    """
+    myname = socket.getfqdn(socket.gethostname())
+    myaddr = socket.gethostbyname(myname)
+    return myaddr
+
+
+def start_server():
+    """
+    开启一个HTTP服务器用于Kindle下载生成的.mobi文件
+    :return:
+    :rtype:
+    """
+    PORT = 8000
+    Handler = SimpleHTTPServer.SimpleHTTPRequestHandler
+    httpd = SocketServer.TCPServer(("", PORT), Handler)
+    print "打开Kindle:体验版网页浏览器, 输入http://%s:8000 点击project.mobi下载" % getIp()
+    httpd.serve_forever()
+
