@@ -70,8 +70,9 @@ Convert Chinese-Novel txt book to kindle .mobi file
 
    有两个办法.
    
-   1.通过 邮件发送给 Kindle的邮箱, 然后Amazon会帮你push给你的Kindle, 详情可以参见: https://www.amazon.cn/gp/help/customer/display.html?nodeId=201974220
-   2.在项目目录执行
+  1.通过 邮件发送给 Kindle的邮箱, 然后Amazon会帮你push给你的Kindle, 详情可以参见: https://www.amazon.cn/gp/help/customer/display.html?nodeId=201974220
+  
+  2.在项目目录执行
    
     txt2mobi trans
     
