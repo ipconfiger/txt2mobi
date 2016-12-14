@@ -39,9 +39,10 @@ class Chapter(object):
         self.lines.append(line)
 
     def as_html(self):
-        rows = ["    <h2 id=\"ch%s\">%s</h2>" % (self.idx, self.title.encode('utf8'))]
+        rows = ["    <h3 id=\"ch%s\">%s</h3>" % (self.idx, self.title.encode('utf8'))]
         for line in self.lines:
             rows.append("    <p>%s</p>" % line.encode('utf8'))
+        rows.append("    <mbp:pagebreak />")
         print "章节", self.title, "生成完毕"
         return "\n".join(rows)
 
@@ -78,9 +79,13 @@ class Book(object):
         :return:
         :rtype:
         """
-        line = line.strip()
-        if 3 < len(line) < 30 and u"第" in line and u"章" in line:
-            return True
+        if line.startswith(u'第'):
+            if 3 < len(line.strip()) < 30 and u"第" in line and u"章" in line:
+                return True
+        line = line.replace(u"．", u".").replace(u":", u".")
+        if line.split('.')[0].isdigit():
+            if 3 < len(line.strip()) < 20:
+                return True
         return False
 
     def process_lines(self, lines):
