@@ -24,6 +24,7 @@ def init_project():
     rows.append(u'cover-img=cover.png')
     rows.append(u'title=书名')
     rows.append(u'author=作者')
+    rows.append(u'max-chapter=1500')
     with open(os.path.join(current_working_dir(), '.project.ini'), 'w') as f:
         f.write("\n".join([r.encode('utf8') for r in rows]))
         f.close()
@@ -65,6 +66,13 @@ class ProjectConfig(object):
     def author(self):
         return self.cf.get('book', 'author').decode('utf8')
 
+    @property
+    def max_chapter(self):
+        try:
+            return self.cf.get('book', 'max-chapter')
+        except:
+            return 1500
+
 
 def codeTrans(code):
     """
@@ -79,6 +87,11 @@ def codeTrans(code):
         'GB2312': 'GBK'
     }
     return codings.get(code, 'utf8')
+
+
+def no_html(input_str):
+    import re
+    return re.sub(r'</?\w+[^>]*>', '', input_str)
 
 
 def getIp():

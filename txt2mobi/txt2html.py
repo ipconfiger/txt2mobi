@@ -1,7 +1,7 @@
 # coding=utf8
 
 import chardet
-from utilities import codeTrans, ProjectConfig
+from utilities import codeTrans, ProjectConfig, no_html
 from exceptions import EncodingError
 
 
@@ -36,27 +36,31 @@ class Chapter(object):
         self.idx = idx
 
     def append_line(self, line):
-        line = line.replace('\r', '').replace('\n', '')
+        line = no_html(line)
+        line = line.replace('\r', '').replace('\n', '').replace('<', '&lt;').replace('>', '&gt;')
         self.lines.append(line)
 
     def as_html(self):
-        rows = ["    <h3 id=\"ch%s\">%s</h3>" % (self.idx, self.title.encode('utf8'))]
+        if len(self.lines) < 1:
+            return ""
+        rows = ["    <a name=\"ch%s\"/><h3 id=\"ch%s\">%s</h3>" % (self.idx, self.idx, self.title.encode('utf8'))]
         for line in self.lines:
             rows.append("    <p>%s</p>" % line.encode('utf8'))
         rows.append("    <mbp:pagebreak />")
         print "章节", self.title, "生成完毕"
         return "\n".join(rows)
 
-    def as_ncx(self):
+    def as_ncx(self, idx):
+        if len(self.lines) < 1:
+            return ""
         ncx = """      <navPoint id="ch%(idx)s" playOrder="%(idx)s">
             <navLabel>
                 <text>
                     %(title)s
-
                 </text>
             </navLabel>
-            <content src="book.html#ch%(idx)s" />
-        </navPoint>""" % dict(idx=self.idx, title=self.title.encode('utf8'))
+            <content src="book-%(book_idx)s.html#ch%(idx)s" />
+        </navPoint>""" % dict(idx=self.idx, title=self.title.encode('utf8'), book_idx=idx)
         print "章节索引", self.title, "生成完毕"
         return ncx
 
@@ -72,6 +76,42 @@ class Book(object):
         self.chapters = []
         self.process_lines(lines)
         self.name = config.title
+
+    def trim(self):
+        """
+        去掉没有内容的章节
+        :return:
+        :rtype:
+        """
+        trimed_chapters = [chapter for chapter in self.chapters if chapter.lines]
+        del self.chapters[:]
+        self.chapters = trimed_chapters
+
+    def book_count(self):
+        """
+        计算有几本书,因为太大了生成出来的文件有问题, 所以每1500章就切分生成一个mobi文件
+        :return:
+        :rtype:
+        """
+        ct = len(self.chapters) / config.max_chapter
+        md = len(self.chapters) / config.max_chapter
+        if md > 0:
+            ct += 1
+        if ct + md == 0:
+            ct = 1
+        return ct
+
+    def __start_end_of_index(self, idx):
+        """
+        根据idx计算开始和结束的id
+        :param idx:
+        :type idx:
+        :return:
+        :rtype:
+        """
+        start = (idx - 1) * config.max_chapter
+        end = idx * config.max_chapter
+        return start, end
 
     def __is_chapter_title(self, line):
         """
@@ -109,12 +149,13 @@ class Book(object):
                 if len(line.strip()):
                     chapter.append_line(line)
 
-    def gen_menu(self):
+    def gen_menu(self, idx):
         """
         生成目录html
         :return:
         :rtype:
         """
+        start, end = self.__start_end_of_index(idx)
         menu_base = """
     <div id="toc">
         <h2>
@@ -125,18 +166,21 @@ class Book(object):
         </ul>
     </div>
     <div class="pagebreak"></div>
-        """ % "\n".join(["            <li><a href=\"#ch%s\">%s</a></li>" % (chapter.idx, chapter.title.encode('utf8')) for chapter in self.chapters])
+        """ % "\n".join(["            <li><a href=\"#ch%s\">%s</a></li>" % (
+            chapter.idx,
+            chapter.title.encode('utf8')) for chapter in self.chapters[start: end] if chapter.lines])
         return menu_base
 
-    def gen_html_file(self):
+    def gen_html_file(self, idx):
         """
         生成HTML文件
         :return:
         :rtype:
         """
-        menu = self.gen_menu()
+        menu = self.gen_menu(idx)
+        start, end = self.__start_end_of_index(idx)
         book_name = config.title.encode('utf8')
-        contents = "\n".join([chapter.as_html() for chapter in self. chapters])
+        contents = "\n".join([chapter.as_html() for chapter in self. chapters[start: end]])
 
         data = dict(book_name=book_name, menu=menu, content=contents)
 
@@ -149,16 +193,15 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     <title>%(book_name)s</title>
     <style type="text/css">
     p { margin-top: 1em; text-indent: 0em; }
-
     h1 {margin-top: 1em}
     h2 {margin: 2em 0 1em; text-align: center; font-size: 2.5em;}
     h3 {margin: 0 0 2em; font-weight: normal; text-align:center; font-size: 1.5em; font-style: italic;}
-
     .center { text-align: center; }
     .pagebreak { page-break-before: always; }
     </style>
 </head>
 <body>
+<a name="toc"/>
 %(menu)s
 <!-- Your book goes here -->
 %(content)s
@@ -167,15 +210,16 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         """ % data
         return html_base
 
-    def gen_ncx(self):
+    def gen_ncx(self, idx):
         """
         生成NCX文件内容
         :return:
         :rtype:
         """
+        start, end = self.__start_end_of_index(idx)
         data = dict(
             book_name=config.title.encode('utf8'),
-            menavPoints="\n".join([chapter.as_ncx() for chapter in self.chapters])
+            menavPoints="\n".join([chapter.as_ncx(idx) for chapter in self.chapters[start: end]])
         )
         ncx_base = """<?xml version="1.0"?>
 <!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN"
@@ -193,7 +237,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         """ % data
         return ncx_base
 
-    def gen_opf_file(self):
+    def gen_opf_file(self, idx):
         """
         生成项目文件
         :return:
@@ -203,7 +247,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 <package unique-identifier="uid" xmlns:opf="http://www.idpf.org/2007/opf" xmlns:asd="http://www.idpf.org/asdfaf">
     <metadata>
         <dc-metadata  xmlns:dc="http://purl.org/metadata/dublin_core" xmlns:oebpackage="http://openebook.org/namespaces/oeb-package/1.0/">
-            <dc:Title>%(title)s</dc:Title>
+            <dc:Title>%(title)s-%(idx)s</dc:Title>
             <dc:Language>zh-cn</dc:Language>
             <dc:Creator>%(author)s</dc:Creator>
             <dc:Copyrights>%(author)s</dc:Copyrights>
@@ -214,9 +258,10 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         </dc-metadata>
     </metadata>
     <manifest>
-        <item id="toc" properties="nav" href="book.html" media-type="application/xhtml+xml"/>
-        <item id="content" media-type="application/xhtml+xml" href="book.html"></item>
+        <item id="toc" properties="nav" href="book-%(idx)s.html" media-type="application/xhtml+xml"/>
+        <item id="content" media-type="application/xhtml+xml" href="book-%(idx)s.html"></item>
         <item id="cover-image" media-type="image/png" href="%(cover)s"/>
+        <item id="ncx" media-type="application/x-dtbncx+xml" href="toc-%(idx)s.ncx"/>
     </manifest>
     <spine toc="ncx">
         <itemref idref="cover-image"/>
@@ -224,17 +269,25 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         <itemref idref="content"/>
     </spine>
     <guide>
-        <reference type="toc" title="%(title_name)s" href="book.html"/>
-        <reference type="content" title="Book" href="book.html"/>
+        <reference type="toc" title="%(title_name)s" href="book-%(idx)s.html#toc"/>
+        <reference type="content" title="Book" href="book-%(idx)s.html"/>
     </guide>
 </package>
         """ % dict(
             title_name=u"目录".encode('utf8'),
             author=config.author.encode('utf8'),
-            title=config.title.encode('utf8'),
-            cover=config.cover_image
+            title="%s-%s" % (config.title.encode('utf8'), idx) if self.book_count() > 1 else config.title.encode('utf8'),
+            cover=config.cover_image,
+            idx="%s" % idx
         )
         return opf_file
 
-    def gen_command(self):
-        return "%s project.opf" % config.gen_command.encode('utf')
+    def gen_command(self, idx):
+        """
+        生成执行的命令
+        :param idx:
+        :type idx:
+        :return:
+        :rtype:
+        """
+        return "%s project-%s.opf" % (config.gen_command.encode('utf'), idx)

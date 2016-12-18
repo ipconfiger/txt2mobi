@@ -25,10 +25,12 @@ def generate_project():
     :rtype:
     """
     book = test_project()
-    os.system(book.gen_command())
-    src_path = os.path.join(current_working_dir(), 'project.mobi')
-    des_path = os.path.join(current_working_dir(), '%s.mobi' % book.name.encode('utf8'))
-    shutil.move(src_path, des_path)
+    book_count = book.book_count()
+    for idx in range(1, book_count + 1):
+        os.system(book.gen_command(idx))
+        src_path = os.path.join(current_working_dir(), 'project-%s.mobi' % idx)
+        des_path = os.path.join(current_working_dir(), '%s-%s.mobi' % (book.name.encode('utf8'), idx))
+        shutil.move(src_path, des_path)
 
 def test_project():
     """
@@ -40,32 +42,35 @@ def test_project():
     onlyfiles = [os.path.join(dir_path, f) for f in os.listdir(dir_path) if f.endswith('txt')]
     for file_path in onlyfiles:
         book = Book(file_path)
+        book.trim()
         break
     # 生成opf文件
-    try:
-        opf_path = os.path.join(current_working_dir(), 'project.opf')
-        with open(opf_path, 'w') as f:
-            f.write(book.gen_opf_file())
-            f.close()
-        print "opf文件生成完毕"
+    book_count = book.book_count()
+    for idx in range(1, book_count+1):
+        try:
+            opf_path = os.path.join(current_working_dir(), 'project-%s.opf' % idx)
+            with open(opf_path, 'w') as f:
+                f.write(book.gen_opf_file(idx))
+                f.close()
+            print "opf文件生成完毕"
 
-        # 生成ncx文件
-        ncx_path = os.path.join(current_working_dir(), 'toc.ncx')
-        with open(ncx_path, 'w') as f:
-            f.write(book.gen_ncx())
-            f.close()
-        print "ncx文件生成完毕"
+            # 生成ncx文件
+            ncx_path = os.path.join(current_working_dir(), 'toc-%s.ncx' % idx)
+            with open(ncx_path, 'w') as f:
+                f.write(book.gen_ncx(idx))
+                f.close()
+            print "ncx文件生成完毕"
 
-        # 生成book.html
-        book_path = os.path.join(current_working_dir(), 'book.html')
-        with open(book_path, 'w') as f:
-            f.write(book.gen_html_file())
-            f.close()
-        print "book.html生成完毕"
-        return book
-    except EncodingError, e:
-        print "文件编码异常无法解析,请尝试用iconv来转码成utf8后再试,或者提交issuse"
-        sys.exit(1)
+            # 生成book.html
+            book_path = os.path.join(current_working_dir(), 'book-%s.html' % idx)
+            with open(book_path, 'w') as f:
+                f.write(book.gen_html_file(idx))
+                f.close()
+            print "book-%s.html生成完毕" % idx
+        except EncodingError, e:
+            print "文件编码异常无法解析,请尝试用iconv来转码成utf8后再试,或者提交issuse"
+            sys.exit(1)
+    return book
 
 
 
