@@ -13,6 +13,7 @@ setup(name='txt2mobi',
       packages=['txt2mobi'],
       install_requires=[
           'chardet',
+          'click'
       ],
       entry_points = {
         'console_scripts': ['txt2mobi=txt2mobi.main:main'],

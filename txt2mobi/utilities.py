@@ -16,13 +16,18 @@ def current_working_dir():
 
 
 def init_project():
+    book_name = ''
+    dir_path = current_working_dir()
+    onlyfiles = [f for f in os.listdir(dir_path) if f.endswith('txt')]
+    for file_name in onlyfiles:
+        book_name = file_name.split('.')[0]
     rows = []
     rows.append(u'[txt2mobi]')
     rows.append(u'kindlegen=kindlegen')
     rows.append(u'')
     rows.append(u'[book]')
     rows.append(u'cover-img=cover.png')
-    rows.append(u'title=书名')
+    rows.append(u'title=%s' % book_name.decode('utf8'))
     rows.append(u'author=作者')
     rows.append(u'max-chapter=1500')
     with open(os.path.join(current_working_dir(), '.project.ini'), 'w') as f:

@@ -18,13 +18,13 @@ def op_init_project():
     init_project()
 
 
-def generate_project():
+def generate_project(title):
     """
     生成项目文件
     :return:
     :rtype:
     """
-    book = test_project()
+    book = test_project(title)
     book_count = book.book_count()
     for idx in range(1, book_count + 1):
         os.system(book.gen_command(idx))
@@ -32,7 +32,7 @@ def generate_project():
         des_path = os.path.join(current_working_dir(), '%s-%s.mobi' % (book.name.encode('utf8'), idx))
         shutil.move(src_path, des_path)
 
-def test_project():
+def test_project(title):
     """
     测试项目, 跑一遍, 生成文件但是不调用kindlegen
     :return:
@@ -41,7 +41,7 @@ def test_project():
     dir_path = current_working_dir()
     onlyfiles = [os.path.join(dir_path, f) for f in os.listdir(dir_path) if f.endswith('txt')]
     for file_path in onlyfiles:
-        book = Book(file_path)
+        book = Book(file_path, title)
         book.trim()
         break
     # 生成opf文件
