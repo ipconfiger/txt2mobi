@@ -2,6 +2,8 @@
 Convert Chinese-Novel txt book to kindle .mobi file
 因为只能用于中文网络小说txt版的转换, 这里就不用英文屁话了
 
+## 最近更新(v0.0.3)
+增加了根据章节数量切分书籍的功能, 因为超过一定大小的mobi文件无法推送, 所以超过30M的.txt文件生成出来的.mobi文件有可能会超过推送文件大小的限制, 所以增加了这个功能
 ## 前提步骤
 1. 下载KindleGen官方转换工具并安装
    因为亚马逊官网在中国区不开放send to kindle服务, 所以KindleGen工具也没有开放, 所以只能前往帮助页下载, 地址如下:
@@ -38,7 +40,8 @@ Convert Chinese-Novel txt book to kindle .mobi file
     cover-img=cover.png
     title=校花的贴身高手
     author=鱼人二代
-    
+    max-chapter=1500
+   
    [book]节点的不必说了大家都懂, kindlegen这项是KindleGen的命令路径, 比如在windows下我估摸着应该是
    
     kindlegen=c:/KindleGen/kindlegen.exe 
@@ -64,8 +67,8 @@ Convert Chinese-Novel txt book to kindle .mobi file
    
     txt2mobi gen
    
-   生成完成后会在项目目录里生成  书名.mobi 文件, 就是转换好的结果了
-
+   生成完成后会在项目目录里生成  书名-1.mobi 文件, 就是转换好的结果了, 如果章节数超过max-chapter的设置, 将会切分成多个.mobi文件
+   
 ### 6. 发送到Kindle
 
    有两个办法.

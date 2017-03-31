@@ -74,7 +74,7 @@ class ProjectConfig(object):
     @property
     def max_chapter(self):
         try:
-            return self.cf.get('book', 'max-chapter')
+            return self.cf.getint('book', 'max-chapter')
         except:
             return 1500
 
